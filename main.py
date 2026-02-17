@@ -66,6 +66,7 @@ def main():
         width = 450 / 72
         height = 400 / 72
         textbox = slide.shapes.add_textbox(Inches(left), Inches(top), Inches(width), Inches(height))
+        textbox.text_frame.word_wrap = True
         for item in slide_data['items']:
             parts = item.split('\n')
             for i, part in enumerate(parts):
@@ -79,6 +80,7 @@ def main():
                 p.font.name = 'Arial'
                 p.font.size = Pt(14)
                 p.font.color.rgb = RGBColor(255, 255, 255)
+                p.line_spacing = 1.2
 
     # Move second slide to the end
     current = list(prs.slides._sldIdLst)
