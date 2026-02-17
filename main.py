@@ -3,7 +3,7 @@ import os
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
-from data import data
+from data.data import data
 
 def main():
     sprint_number = int(sys.argv[1]) if len(sys.argv) > 1 else 1
@@ -50,7 +50,7 @@ def main():
 
         # Add title
         left = 25 / 72
-        top = 50 / 72
+        top = 60 / 72
         width = 880 / 72
         height = 60 / 72
         textbox = slide.shapes.add_textbox(Inches(left), Inches(top), Inches(width), Inches(height))
@@ -67,12 +67,18 @@ def main():
         height = 400 / 72
         textbox = slide.shapes.add_textbox(Inches(left), Inches(top), Inches(width), Inches(height))
         for item in slide_data['items']:
-            p = textbox.text_frame.add_paragraph()
-            p.text = f"- {item}"
-            p.font.name = 'Arial'
-            p.font.size = Pt(14)
-            p.font.color.rgb = RGBColor(255, 255, 255)
-            p.level = 0
+            parts = item.split('\n')
+            for i, part in enumerate(parts):
+                p = textbox.text_frame.add_paragraph()
+                if i == 0:
+                    p.text = f"• {part}"
+                    p.level = 0
+                else:
+                    p.text = part
+                    p.level = 1
+                p.font.name = 'Arial'
+                p.font.size = Pt(14)
+                p.font.color.rgb = RGBColor(255, 255, 255)
 
     # Move second slide to the end
     current = list(prs.slides._sldIdLst)
