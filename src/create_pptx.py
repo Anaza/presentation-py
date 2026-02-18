@@ -51,6 +51,7 @@ def create_presentation(sprint_number, data):
         width = 880 / 72
         height = 60 / 72
         textbox = slide.shapes.add_textbox(Inches(left), Inches(top), Inches(width), Inches(height))
+        textbox.text_frame.word_wrap = True
         p = textbox.text_frame.paragraphs[0]
         p.text = slide_data['title']
         p.font.name = 'Play'
@@ -59,7 +60,7 @@ def create_presentation(sprint_number, data):
 
         # Add items
         left = 30 / 72
-        top = 130 / 72
+        top = 140 / 72
         width = 450 / 72
         height = 400 / 72
         textbox = slide.shapes.add_textbox(Inches(left), Inches(top), Inches(width), Inches(height))

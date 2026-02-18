@@ -58,7 +58,7 @@ def main():
         if data_source == 'json':
             pass  # already loaded
         else:
-            analyzed_data = get_analyzed_data(sprint_number)
+            analyzed_data = get_sprint_data(sprint_number)
 
     # Create presentation
     create_presentation(int(sprint_number), analyzed_data)

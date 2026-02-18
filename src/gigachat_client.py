@@ -74,6 +74,7 @@ def analyze_sprint_data_giga(sprint_number):
 
     gigachat_response = clean_gigachat_response(response.choices[0].message.content)
 
+    # print("GigaChat response:", gigachat_response)
     # Предполагаем, что ответ в JSON формате
     try:
         result = json.loads(gigachat_response)
