@@ -22,19 +22,35 @@ def get_epic_names(epic_ids, sprint_number):
         'Authorization': f'Basic {auth_string}',
     }
 
+    epic_file = f"data/epic_names_{sprint_number}.json"
+    existing_names = {}
+    try:
+        with open(epic_file, "r", encoding="utf-8") as f:
+            existing_names = json.load(f)
+    except FileNotFoundError:
+        pass
+
     epic_names = {}
     for epic_id in epic_ids:
         if not epic_id:
             continue
-        url = f"{JIRA_URL}/issue/{epic_id}?fields=summary"
-        response = requests.get(url, headers=headers, verify=False)
-        if response.status_code == 200:
-            data = response.json()
-            summary = data['fields'].get('summary', '')
-            epic_names[epic_id] = summary
+        if epic_id in existing_names:
+            epic_names[epic_id] = existing_names[epic_id]
         else:
-            print(f"Ошибка получения эпика {epic_id}: {response.status_code} {response.text}")
-            epic_names[epic_id] = f"Ошибка: {response.status_code}"
+            url = f"{JIRA_URL}/issue/{epic_id}?fields=summary"
+            response = requests.get(url, headers=headers, verify=False)
+            if response.status_code == 200:
+                data = response.json()
+                summary = data['fields'].get('summary', '')
+                epic_names[epic_id] = summary
+            else:
+                print(f"Ошибка получения эпика {epic_id}: {response.status_code} {response.text}")
+                epic_names[epic_id] = f"Ошибка: {response.status_code}"
+
+    # Обновить файл с новыми названиями
+    existing_names.update(epic_names)
+    with open(epic_file, "w", encoding="utf-8") as f:
+        json.dump(existing_names, f, ensure_ascii=False, indent=4)
 
     return epic_names
 
