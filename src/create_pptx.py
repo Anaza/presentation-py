@@ -21,7 +21,7 @@ def create_presentation(sprint_number, data):
     p.font.color.rgb = RGBColor(255, 255, 255)
     p.font.bold = True
 
-    # Add slides for each analyzed data item
+    # Add slides for each data item
     for slide_data in data:
         slide = prs.slides.add_slide(prs.slide_layouts[1])  # blank layout
 
@@ -31,6 +31,19 @@ def create_presentation(sprint_number, data):
         # width = 70 / 72
         # height = 13 / 72
         # slide.shapes.add_picture('./images/logo.png', Inches(left), Inches(top), Inches(width), Inches(height))
+
+        # Add epic
+        left = 25 / 72
+        top = 12 / 72
+        width = 800 / 72
+        height = 40 / 72
+        textbox = slide.shapes.add_textbox(Inches(left), Inches(top), Inches(width), Inches(height))
+        p = textbox.text_frame.paragraphs[0]
+        p.text = slide_data['epic']
+        p.font.name = 'Play'
+        p.font.size = Pt(18)
+        p.font.bold = True
+        p.font.color.rgb = RGBColor(255, 255, 255)
 
         # Add title
         left = 25 / 72
@@ -44,19 +57,27 @@ def create_presentation(sprint_number, data):
         p.font.size = Pt(32)
         p.font.color.rgb = RGBColor(255, 255, 255)
 
-        # Add content
+        # Add items
         left = 30 / 72
         top = 130 / 72
-        width = 850 / 72
+        width = 450 / 72
         height = 400 / 72
         textbox = slide.shapes.add_textbox(Inches(left), Inches(top), Inches(width), Inches(height))
         textbox.text_frame.word_wrap = True
-        p = textbox.text_frame.paragraphs[0]
-        p.text = slide_data['content']
-        p.font.name = 'Arial'
-        p.font.size = Pt(18)
-        p.font.color.rgb = RGBColor(255, 255, 255)
-        p.line_spacing = 1.2
+        for item in slide_data['items']:
+            parts = item.split('\n')
+            for i, part in enumerate(parts):
+                p = textbox.text_frame.add_paragraph()
+                if i == 0:
+                    p.text = f"• {part}"
+                    p.level = 0
+                else:
+                    p.text = part
+                    p.level = 1
+                p.font.name = 'Arial'
+                p.font.size = Pt(14)
+                p.font.color.rgb = RGBColor(255, 255, 255)
+                p.line_spacing = 1.2
 
     # Move second slide to the end
     current = list(prs.slides._sldIdLst)
