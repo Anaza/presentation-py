@@ -8,14 +8,20 @@ from src.ollama_client import analyze_sprint_data_ollama
 def main():
     if len(sys.argv) < 3:
         print("Usage: python main.py <sprint_number> <use_ai>")
-        print("use_ai options: 'none' (no AI, use existing data), 'giga' (GigaChat), 'lmstudio' (LMStudio), 'ollama' (Ollama)")
+        print("use_ai options: 'none' (no AI, use existing data), 'giga' (GigaChat), 'lmstudio' (LMStudio), 'ollama' (Ollama), 'get_data_jira' (get data from Jira)")
         sys.exit(1)
 
     sprint_number = sys.argv[1]  # Keep as string for file names
     use_ai = sys.argv[2].lower()
 
+    if use_ai == 'get_data_jira':
+        # Get data from Jira
+        subprocess.run([sys.executable, "src/get_jira_data.py", sprint_number], check=True)
+        print(f"Data from Jira saved for sprint {sprint_number}")
+        return  # Exit without creating presentation
+
     if use_ai not in ['none', 'giga', 'lmstudio', 'ollama']:
-        print("Invalid use_ai option. Use 'none', 'giga', 'lmstudio', or 'ollama'")
+        print("Invalid use_ai option. Use 'none', 'giga', 'lmstudio', 'ollama', or 'get_data_jira'")
         sys.exit(1)
 
     if use_ai != 'none':
