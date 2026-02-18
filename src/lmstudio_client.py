@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from openai import OpenAI
 from promt.promt import prompt
 
@@ -28,8 +29,11 @@ def get_analyzed_data(sprint_number):
         raise FileNotFoundError(f"Analyzed data file not found: {data_file}. Run with use_ai='lmstudio' or 'giga' first or ensure the file exists.")
 
 def clean_lmstudio_response(response):
+    # print("LM Studio response:", response)
     # Аналогичная очистка как в gigachat_client
     response = response.strip()
+    # Убрать секцию <think>...</think>
+    response = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
     if response.startswith('```json'):
         response = response[7:]
     if response.startswith('```'):

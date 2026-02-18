@@ -1,11 +1,11 @@
 import sys
 import subprocess
 import json
-from src.create_pptx import create_presentation
+from src.get_jira_data import get_jira_data
 from src.gigachat_client import analyze_sprint_data_giga
 from src.lmstudio_client import analyze_sprint_data_lmstudio
 from src.ollama_client import analyze_sprint_data_ollama
-from src.get_jira_data import get_jira_data
+from src.create_pptx import create_presentation
 
 def get_sprint_data(sprint_number):
     data_file = f"data/data_raw_{sprint_number}.py"
