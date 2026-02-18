@@ -39,53 +39,21 @@ def get_sprint_data(sprint_number):
 def analyze_sprint_data(sprint_number):
     client = get_gigachat_client()
 
+    # Получить данные
+    data = get_sprint_data(sprint_number)
+
     # Подготовить промпт
     system_prompt = """
-    Ты помощник для анализа данных спринта. Получи данные спринта с помощью функции get_sprint_data, проанализируй их, сгруппируй логически и подготовь 5-7 текстовых блоков для слайдов презентации.
+    Ты помощник для анализа данных спринта. Проанализируй предоставленные данные, сгруппируй их логически и подготовь 5-7 текстовых блоков для слайдов презентации.
     Каждый блок должен быть кратким (не более 500 символов) и содержать ключевую информацию по группе задач.
     Формат вывода: JSON массив объектов с полями "title" и "content".
     """
 
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": f"Проанализируй данные спринта {sprint_number}"}
-    ]
+    user_content = f"Данные спринта: {data}"
 
-    functions = [
-        {
-            "name": "get_sprint_data",
-            "description": "Получить данные спринта из файла",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "sprint_number": {
-                        "type": "string",
-                        "description": "Номер спринта"
-                    }
-                },
-                "required": ["sprint_number"]
-            }
-        }
-    ]
+    message = f"{system_prompt}\n\n{user_content}"
 
-    response = client.chat(messages=messages, functions=functions, function_call="auto")
-
-    if response.choices[0].message.function_call:
-        fc = response.choices[0].message.function_call
-        if fc.name == "get_sprint_data":
-            import json
-            args = json.loads(fc.arguments)
-            data = get_sprint_data(args["sprint_number"])
-
-            # Добавить результат функции в messages
-            messages.append({
-                "role": "function",
-                "name": "get_sprint_data",
-                "content": json.dumps(data)
-            })
-
-            # Повторный запрос
-            response = client.chat(messages=messages)
+    response = client.chat(message)
 
     # Предполагаем, что ответ в JSON формате
     import json
