@@ -4,6 +4,7 @@ from src.create_pptx import create_presentation
 from src.gigachat_client import analyze_sprint_data, get_analyzed_data
 from src.lmstudio_client import analyze_sprint_data_lmstudio
 from src.ollama_client import analyze_sprint_data_ollama
+from src.get_jira_data import get_jira_data
 
 def main():
     if len(sys.argv) < 3:
@@ -16,7 +17,7 @@ def main():
 
     if use_ai == 'get_data_jira':
         # Get data from Jira
-        subprocess.run([sys.executable, "src/get_jira_data.py", sprint_number], check=True)
+        data = get_jira_data(sprint_number)
         print(f"Data from Jira saved for sprint {sprint_number}")
         return  # Exit without creating presentation
 
