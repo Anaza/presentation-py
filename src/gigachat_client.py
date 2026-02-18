@@ -35,6 +35,14 @@ def get_sprint_data(sprint_number):
     except Exception as e:
         return {"error": f"Failed to load data: {str(e)}"}
 
+def get_analyzed_data(sprint_number):
+    data_file = f"data/data_{sprint_number}.py"
+    try:
+        with open(data_file, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        raise FileNotFoundError(f"Analyzed data file not found: {data_file}. Run with useAI=true first or ensure the file exists.")
+
 def analyze_sprint_data(sprint_number):
     client = get_gigachat_client()
 
