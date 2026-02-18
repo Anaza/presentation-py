@@ -4,6 +4,7 @@ import importlib.util
 import json
 from dotenv import load_dotenv
 from gigachat import GigaChat
+from promt.promt import prompt
 
 load_dotenv()
 
@@ -43,6 +44,27 @@ def get_analyzed_data(sprint_number):
     except Exception as e:
         raise FileNotFoundError(f"Analyzed data file not found: {data_file}. Run with useAI=true first or ensure the file exists.")
 
+def clean_gigachat_response(response):
+    # Убрать ```json и ``` из ответа
+    response = response.strip()
+    if response.startswith('```json'):
+        response = response[7:]
+    if response.startswith('```'):
+        response = response[3:]
+    if response.endswith('```'):
+        response = response[:-3]
+    response = response.strip()
+    # Убрать все оставшиеся ```
+    response = response.replace('```', '')
+    # Убрать комментарии после JSON
+    for marker in ['\n\n###', '\n\n', '###']:
+        pos = response.find(marker)
+        if pos != -1:
+            response = response[:pos]
+            break
+    response = response.strip()
+    return response
+
 def analyze_sprint_data(sprint_number):
     client = get_gigachat_client()
 
@@ -50,11 +72,7 @@ def analyze_sprint_data(sprint_number):
     data = get_sprint_data(sprint_number)
 
     # Подготовить промпт
-    system_prompt = """
-    Ты помощник для анализа данных спринта. Проанализируй предоставленные данные, сгруппируй их по уникальным epic. Для каждого epic создай объект с полями: "epic" (название epic), "title" (общее название выполненных работ по этому epic), "items" (список всех задач epic в прошлом времени, каждая начинается с большой буквы, как отчет о проделанной работе).
-    Формат вывода: JSON массив объектов с полями "epic", "title", "items".
-    Не добавляй комментарии или объяснения после JSON.
-    """
+    system_prompt = prompt
 
     user_content = f"Данные спринта: {data}"
 
@@ -62,22 +80,7 @@ def analyze_sprint_data(sprint_number):
 
     response = client.chat(message)
 
-    gigachat_response = response.choices[0].message.content
-
-    # Убрать ```json и ``` из ответа
-    if gigachat_response.startswith('```json'):
-        gigachat_response = gigachat_response[7:]
-    if gigachat_response.endswith('```'):
-        gigachat_response = gigachat_response[:-3]
-    gigachat_response = gigachat_response.strip()
-
-    # Убрать комментарии после JSON
-    for marker in ['\n\n###', '\n\n', '###']:
-        pos = gigachat_response.find(marker)
-        if pos != -1:
-            gigachat_response = gigachat_response[:pos]
-            break
-    gigachat_response = gigachat_response.strip()
+    gigachat_response = clean_gigachat_response(response.choices[0].message.content)
 
     # Предполагаем, что ответ в JSON формате
     try:
@@ -89,9 +92,6 @@ def analyze_sprint_data(sprint_number):
         return result
     except json.JSONDecodeError as e:
         print(f"Failed to parse JSON: {e}")
-        # Сохранить ответ как есть в data файл
-        data_file = f"data/data_{sprint_number}.py"
-        with open(data_file, "w", encoding="utf-8") as f:
-            f.write(gigachat_response)
+        # Не сохранять файл, если JSON не валидный
         # Вернуть пустой список, чтобы избежать KeyError в create_pptx
         return []
