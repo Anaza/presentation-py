@@ -49,8 +49,8 @@ def get_jira_data(sprint_number):
 
     SPRINT_NAME = f"Tools.{sprint_number}"
 
-    # 1. Формируем JQL-запрос (получаем все задачи спринта в проекте ADSTOOLS)
-    jql = f'project = ADSTOOLS AND sprint = {SPRINT_NAME}'
+    # 1. Формируем JQL-запрос (получаем задачи спринта в проекте ADSTOOLS со статусами Сделано, Готово, Выполнено)
+    jql = f'project = ADSTOOLS AND sprint = {SPRINT_NAME} AND (status = "Done"  OR status = "Ready" OR status = "Closed")'
 
     # 2. Параметры запроса
     url = f"{JIRA_URL}/search"
