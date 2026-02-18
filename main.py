@@ -1,7 +1,7 @@
 import sys
 import subprocess
-import importlib.util
 from src.create_pptx import create_presentation
+from src.gigachat_client import analyze_sprint_data
 
 def main():
     if len(sys.argv) < 2:
@@ -13,15 +13,11 @@ def main():
     # Run read_pdf.py to update data_{sprint_number}.py
     subprocess.run([sys.executable, "src/read_pdf.py", sprint_number], check=True)
 
-    # Import updated data from data_{sprint_number}.py
-    data_file = f"data/data_{sprint_number}.py"
-    spec = importlib.util.spec_from_file_location("data_module", data_file)
-    data_module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(data_module)
-    data = data_module.data
+    # Analyze data with GigaChat
+    analyzed_data = analyze_sprint_data(sprint_number)
 
     # Create presentation
-    create_presentation(int(sprint_number), data)
+    create_presentation(int(sprint_number), analyzed_data)
 
     print(f"Presentation created: ./result/sprint_{sprint_number}.pptx")
 

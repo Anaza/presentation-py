@@ -1,15 +1,17 @@
 # Python-generated files
 __pycache__/
 *.py[oc]
-data/
-pdf/
-html/
-result/
-wheels/
 *.egg-info
+wheels/
 
 # Virtual environments
 .venv
 
+# Environment variables
+.env
 
 .DS_Store
+data/
+pdf/
+html/
+result/
