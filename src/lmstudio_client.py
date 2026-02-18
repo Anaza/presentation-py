@@ -1,32 +1,15 @@
 import os
-import base64
-import importlib.util
 import json
-from dotenv import load_dotenv
-from gigachat import GigaChat
+from openai import OpenAI
 from promt.promt import prompt
 
-load_dotenv()
-
-def get_gigachat_client():
-    # Получаем учетные данные из переменных окружения
-    client_id = os.getenv("GIGAGW_CLIENT_ID", "")
-    client_secret = os.getenv("GIGAGW_CLIENT_SECRET", "")
-    user_pass = f"{client_id}:{client_secret}"
-    credentials_b64 = base64.b64encode(user_pass.encode("utf-8")).decode("utf-8")
-
-    base_url = os.getenv("GIGAGW_BASE_URL")
-    auth_url = os.getenv("GIGAGW_AUTH_URL")
-
-    if not all([client_id, client_secret, base_url, auth_url]):
-        raise ValueError("Missing GigaChat credentials in .env")
-
-    return GigaChat(
-      credentials=credentials_b64,
-      base_url=base_url,
-      auth_url=auth_url,
-      verify_ssl_certs=False,
+def get_lmstudio_client():
+    # LMStudio обычно работает на localhost:1234 без дополнительных credentials
+    client = OpenAI(
+        base_url="http://localhost:1234/v1",
+        api_key="not-needed"  # LMStudio не требует API key
     )
+    return client
 
 def get_sprint_data(sprint_number):
     data_file = f"data/data_raw_{sprint_number}.py"
@@ -42,10 +25,10 @@ def get_analyzed_data(sprint_number):
         with open(data_file, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
-        raise FileNotFoundError(f"Analyzed data file not found: {data_file}. Run with use_ai=true first or ensure the file exists.")
+        raise FileNotFoundError(f"Analyzed data file not found: {data_file}. Run with use_ai='lmstudio' or 'giga' first or ensure the file exists.")
 
-def clean_gigachat_response(response):
-    # Убрать ```json и ``` из ответа
+def clean_lmstudio_response(response):
+    # Аналогичная очистка как в gigachat_client
     response = response.strip()
     if response.startswith('```json'):
         response = response[7:]
@@ -65,8 +48,8 @@ def clean_gigachat_response(response):
     response = response.strip()
     return response
 
-def analyze_sprint_data(sprint_number):
-    client = get_gigachat_client()
+def analyze_sprint_data_lmstudio(sprint_number):
+    client = get_lmstudio_client()
 
     # Получить данные
     data = get_sprint_data(sprint_number)
@@ -78,13 +61,19 @@ def analyze_sprint_data(sprint_number):
 
     message = f"{system_prompt}\n\n{user_content}"
 
-    response = client.chat(message)
+    response = client.chat.completions.create(
+        model="lmstudio-community/DeepSeek-R1-0528-Qwen3-8B-GGUF",
+        messages=[
+            {"role": "user", "content": message}
+        ],
+        temperature=0.7
+    )
 
-    gigachat_response = clean_gigachat_response(response.choices[0].message.content)
+    lmstudio_response = clean_lmstudio_response(response.choices[0].message.content)
 
     # Предполагаем, что ответ в JSON формате
     try:
-        result = json.loads(gigachat_response)
+        result = json.loads(lmstudio_response)
         # Сохранить чистый JSON в data файл
         data_file = f"data/data_{sprint_number}.py"
         with open(data_file, "w", encoding="utf-8") as f:
