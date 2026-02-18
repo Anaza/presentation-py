@@ -3,18 +3,19 @@ import subprocess
 from src.create_pptx import create_presentation
 from src.gigachat_client import analyze_sprint_data, get_analyzed_data
 from src.lmstudio_client import analyze_sprint_data_lmstudio
+from src.ollama_client import analyze_sprint_data_ollama
 
 def main():
     if len(sys.argv) < 3:
         print("Usage: python main.py <sprint_number> <use_ai>")
-        print("use_ai options: 'none' (no AI, use existing data), 'giga' (GigaChat), 'lmstudio' (LMStudio)")
+        print("use_ai options: 'none' (no AI, use existing data), 'giga' (GigaChat), 'lmstudio' (LMStudio), 'ollama' (Ollama)")
         sys.exit(1)
 
     sprint_number = sys.argv[1]  # Keep as string for file names
     use_ai = sys.argv[2].lower()
 
-    if use_ai not in ['none', 'giga', 'lmstudio']:
-        print("Invalid use_ai option. Use 'none', 'giga', or 'lmstudio'")
+    if use_ai not in ['none', 'giga', 'lmstudio', 'ollama']:
+        print("Invalid use_ai option. Use 'none', 'giga', 'lmstudio', or 'ollama'")
         sys.exit(1)
 
     if use_ai != 'none':
@@ -27,6 +28,9 @@ def main():
         elif use_ai == 'lmstudio':
             # Analyze data with LMStudio
             analyzed_data = analyze_sprint_data_lmstudio(sprint_number)
+        elif use_ai == 'ollama':
+            # Analyze data with Ollama
+            analyzed_data = analyze_sprint_data_ollama(sprint_number)
     else:
         # Load existing analyzed data
         analyzed_data = get_analyzed_data(sprint_number)
