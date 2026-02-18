@@ -103,7 +103,7 @@ def get_jira_data(sprint_number):
                 item['epic'] = epic_names.get(item['epic'], item['epic'])
 
         # Сохраняем в файл (после замены epic на название)
-        data_file = f"data/data_jira_{sprint_number}.py"
+        data_file = f"data/data_raw_{sprint_number}.py"
         with open(data_file, "w", encoding="utf-8") as f:
             json.dump(extracted_data, f, ensure_ascii=False, indent=4)
         print(f"Данные сохранены в {data_file}")

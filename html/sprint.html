@@ -1,439 +1,0 @@
-<html xmlns:o="urn:schemas-microsoft-com:office:office"
-      xmlns:x="urn:schemas-microsoft-com:office:excel"
-      xmlns="http://www.w3.org/TR/REC-html40">
-    <head>
-        <title>Jira ДЗО</title>
-        <style type="text/css">
-         table {
-             mso-displayed-decimal-separator:"\,";
-             mso-displayed-thousand-separator:" ";
-         }
-         body
-         {
-             margin: 0px;
-             font-size: 12px;
-             font-family: Arial, sans-serif;
-             color:black;
-         }
-
-        </style>
-        <META HTTP-EQUIV="Content-Type" Content="application/vnd.ms-excel; charset=UTF-8">
-        <!-- JRA-7598 - ensure fields (e.g. description) occupy only one cell - even fields containing newlines. -->
-        <!--
-             Vertical align all cells to the top, in order to align all issue rows of issuetable to the top,
-             since Excel does not use or save the css files it is hardcoded here.
-           -->
-        <style>
-         @page
-         {
-             mso-page-orientation:landscape;
-             margin:.25in .25in .5in .25in;
-             mso-header-margin:.5in;
-             mso-footer-margin:.25in;
-             mso-footer-data:"&R&P of &N";
-             mso-horizontal-page-align:center;
-             mso-vertical-page-align:center;
-         }
-
-         td.issuekey,
-         td.issuetype,
-         td.status {
-             mso-style-parent: "";
-             mso-number-format: \@;
-             text-align: left;
-         }
-         br
-         {
-             mso-data-placement:same-cell;
-         }
-
-         td
-         {
-             vertical-align: top;
-         }
-        </style>
-
-        <!--[if gte mso 9]><xml>
-            <x:ExcelWorkbook>
-            <x:ExcelWorksheets>
-            <x:ExcelWorksheet>
-            <x:Name>general_report</x:Name>
-            <x:WorksheetOptions>
-            <x:Print>
-            <x:ValidPrinterInfo/>
-            </x:Print>
-            </x:WorksheetOptions>
-            </x:ExcelWorksheet>
-            </x:ExcelWorksheets>
-            </x:ExcelWorkbook>
-            </xml><![endif]-->
-    </head>
-    <body>
-
-        <table border="1">
-            <tr bgcolor="#0747a6" height="60">
-                <td colspan="5">
-                    <img src="https://sberworks.ru/jira/jira-logo-scaled.png" width="220" height="60" border="0" alt="Jira ДЗО">
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    <a href="https://sberworks.ru/jira/issues/?jql=issueKey+in+%28ADSTOOLS-3631%2CADSTOOLS-3752%2CADSTOOLS-3768%2CADSTOOLS-3804%2CADSTOOLS-3806%2CADSTOOLS-3811%2CADSTOOLS-3812%2CADSTOOLS-3833%2CADSTOOLS-3852%2CADSTOOLS-3857%2CADSTOOLS-3879%2CADSTOOLS-3896%2CADSTOOLS-3897%29" data-testid="filterNameHref">Jira ДЗО</a>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    Отображение <strong>13</strong> запросов в <strong>18/фев/26 11:48</strong>.
-                </td>
-            </tr>
-        </table>
-
-        
-
-
-                            <issuetable-web-component data-content="issues">
-                <table id="issuetable"  border="1" cellpadding="3" cellspacing="1" width="100%">
-                        <thead>
-        <tr class="rowHeader">
-            
-                                                            <th class="colHeaderLink headerrow-issuetype" data-id="issuetype">
-                            Тип задачи
-                                                    </th>
-                                                
-                                                            <th class="colHeaderLink headerrow-issuekey" data-id="issuekey">
-                            Код
-                                                    </th>
-                                                
-                                                            <th class="colHeaderLink headerrow-summary" data-id="summary">
-                            Тема
-                                                    </th>
-                                                
-                                                            <th class="colHeaderLink headerrow-description" data-id="description">
-                            Описание
-                                                    </th>
-                                                
-                                                            <th class="colHeaderLink headerrow-customfield_10006" data-id="customfield_10006">
-                            Epic Link
-                                                    </th>
-                                                                    </tr>
-    </thead>
-    <tbody>
-                    
-
-                <tr id="issuerow5803796" rel="5803796" data-issuekey="ADSTOOLS-3897" class="issuerow">
-                                            <td class="issuetype">    История
-</td>
-                                            <td class="issuekey">
-
-    <a class="issue-link" data-issue-key="ADSTOOLS-3897" href="https://sberworks.ru/jira/browse/ADSTOOLS-3897">ADSTOOLS-3897</a>
-</td>
-                                            <td class="summary"><p>
-                Storybook: обновить до 10.x+, мигрировать на Vite, оптимизировать бандл монорепы (ускорить HMR до &lt; 10 сек, build &lt; 80 сек)
-    </p>
-</td>
-                                            <td class="description">      Обновить Storybook до последней стабильной версии (10.x+ — мы отстаём уже на 4+ мажорных версии). Установить самую свежую для максимальной производительности, оптимизации и поддержки новых фич. Мигрировать сборщик с Webpack на Vite для значительного ускорения dev-сервера и сборки. Оптимизировать размер бандла Storybook в контексте монорепозитория (Nx/Turbo/Lerna?).<br/>
-<br/>
-Это улучшит скорость разработки (HMR &lt;5 сек вместо 50+), уменьшит время полной загрузки (build &lt;30 сек вместо 5+ мин), устранит зависания и упростит долгосрочную поддержку.<br/>
-<br/>
-*Текущая ситуация (предполагаемые проблемы)*<br/>
- * Storybook на устаревшей версии (до 6.x) с Webpack, что приводит к крайне медленной сборке: запуск приложения &gt;5 минут, обновления в dev-режиме &gt;50 секунд даже при перезагрузке одной страницы.<br/>
-<br/>
- * Частые сбои: падаем в &quot;вечный цикл ожидания&quot; из-за обилия пакетов — приходится вручную перезагружать dev-сервер.<br/>
-<br/>
- * В монорепозитории бандл разрастается до &gt;50 МБ из-за дублирования зависимостей, shared-кода и ненужных модулей (дубликаты node_modules, неоптимизированные stories).<br/>
-<br/>
- * Общий эффект: страдает производительность — долгая инициализация, постоянные зависания в dev-режиме, фрустрация команды и потеря времени на дебаг.
-  </td>
-                                            <td class="customfield_10006">
-            Развитие Frontend Platform Q1 2026
-    </td>
-                    </tr>
-
-
-                <tr id="issuerow5803283" rel="5803283" data-issuekey="ADSTOOLS-3896" class="issuerow">
-                                            <td class="issuetype">    История
-</td>
-                                            <td class="issuekey">
-
-    <a class="issue-link" data-issue-key="ADSTOOLS-3896" href="https://sberworks.ru/jira/browse/ADSTOOLS-3896">ADSTOOLS-3896</a>
-</td>
-                                            <td class="summary"><p>
-                Добавить описание в сторибук
-    </p>
-</td>
-                                            <td class="description">      В сторибук добавить инфу про всякое полезное<br/>
-Можно сослаться на конфлюинс, чтобы и там можно было все находить<br/>
-<br/>
-1. Страница с регаментами, сюда добавить инфу про линтеры https://sberworks.ru/wiki/pages/viewpage.action?pageId=976175899&amp;src=contextnavpagetreemode<br/>
-2. Раздел How To - как что подключить и настроить https://sberworks.ru/wiki/display/ADS/How+to?src=contextnavpagetreemode<br/>
-* настройка ревью<br/>
-* настройка релизного была<br/>
-* настройка размера бандла
-  </td>
-                                            <td class="customfield_10006">
-            Развитие Frontend Platform Q1 2026
-    </td>
-                    </tr>
-
-
-                <tr id="issuerow5797629" rel="5797629" data-issuekey="ADSTOOLS-3879" class="issuerow">
-                                            <td class="issuetype">    История
-</td>
-                                            <td class="issuekey">
-
-    <a class="issue-link" data-issue-key="ADSTOOLS-3879" href="https://sberworks.ru/jira/browse/ADSTOOLS-3879">ADSTOOLS-3879</a>
-</td>
-                                            <td class="summary"><p>
-                Обновление платформенных сервисов и перенос роутов
-    </p>
-</td>
-                                            <td class="description">      - Перенести роуты api-gateway (/)<br/>
-- Вывести роуты на карточку сервиса (/)<br/>
-- Добавить отдельную страницу со списком ингресов и роутов (/)<br/>
-
-  </td>
-                                            <td class="customfield_10006">
-            Архитектура как код Q1 2026
-    </td>
-                    </tr>
-
-
-                <tr id="issuerow5793631" rel="5793631" data-issuekey="ADSTOOLS-3857" class="issuerow">
-                                            <td class="issuetype">    История
-</td>
-                                            <td class="issuekey">
-
-    <a class="issue-link" data-issue-key="ADSTOOLS-3857" href="https://sberworks.ru/jira/browse/ADSTOOLS-3857">ADSTOOLS-3857</a>
-</td>
-                                            <td class="summary"><p>
-                Карточка сервиса и общая диаграмма
-    </p>
-</td>
-                                            <td class="description">      - Вывести карточки сервисов в меню (/)<br/>
-- Перенести АС в отдельный пункт меню (/)<br/>
-- Добавить tech/fresnel и tech/tools в ФП (/)<br/>
-- Построить общую диаграмму взаимодействия ФП (/)<br/>
-
-  </td>
-                                            <td class="customfield_10006">
-            Архитектура как код Q1 2026
-    </td>
-                    </tr>
-
-
-                <tr id="issuerow5793339" rel="5793339" data-issuekey="ADSTOOLS-3852" class="issuerow">
-                                            <td class="issuetype">    История
-</td>
-                                            <td class="issuekey">
-
-    <a class="issue-link" data-issue-key="ADSTOOLS-3852" href="https://sberworks.ru/jira/browse/ADSTOOLS-3852">ADSTOOLS-3852</a>
-</td>
-                                            <td class="summary"><p>
-                Fresnel: bug параллельные запросы блокируют друг друга
-    </p>
-</td>
-                                            <td class="description">      Каждый входящий запрос вызывает метод evaluateList, который удерживает блокировку на запись но только читает локальные данные. Т.е все параллельные входящие запросы без необходимости ждут когда запрос, удерживающий блокировку, завершит выполнение evaluateList
-  </td>
-                                            <td class="customfield_10006">
-            Поддержка Fresnel 2026
-    </td>
-                    </tr>
-
-
-                <tr id="issuerow5790769" rel="5790769" data-issuekey="ADSTOOLS-3833" class="issuerow">
-                                            <td class="issuetype">    История
-</td>
-                                            <td class="issuekey">
-
-    <a class="issue-link" data-issue-key="ADSTOOLS-3833" href="https://sberworks.ru/jira/browse/ADSTOOLS-3833">ADSTOOLS-3833</a>
-</td>
-                                            <td class="summary"><p>
-                Api-gateway запросы ошибочно матчатся на роуты с динамическими параметрами
-    </p>
-</td>
-                                            <td class="description">      В гейтвее 2 сервера- паблик и интернал<br/>
-<br/>
-В паблике у сервиса А есть маршруты /document/most_populars и /document/:id<br/>
-<br/>
-В интернале у сервиса А есть только  /document/:id<br/>
-<br/>
- <br/>
-<br/>
-Если осуществить запрос в интернал с /document/most_populars он найдет соответствие с динамическим /document/:id, к хосту проксируемого хоста подставится путь из реквеста, и пользователь попадёт в host:/document/most_populars, хотя интернал не предполагает доступа к этой ручке конечного сервиса<br/>
-<br/>
- <br/>
-<br/>
-Вариант решения: на обоих серверах должен быть одинаковый набор роутов, но там где они не нужны- прописывать флаг заглушки, они будут возвращать 404 
-  </td>
-                                            <td class="customfield_10006">
-            Поддержка api-gateway 2026
-    </td>
-                    </tr>
-
-
-                <tr id="issuerow5788077" rel="5788077" data-issuekey="ADSTOOLS-3812" class="issuerow">
-                                            <td class="issuetype">    Ошибка
-</td>
-                                            <td class="issuekey">
-
-    <a class="issue-link" data-issue-key="ADSTOOLS-3812" href="https://sberworks.ru/jira/browse/ADSTOOLS-3812">ADSTOOLS-3812</a>
-</td>
-                                            <td class="summary"><p>
-                Не работает модерация в админке/не сохраняется редактирование проекта
-    </p>
-</td>
-                                            <td class="description">      Не сохраняются изменения, внесенные в проект (прикрепила запись экрана)<br/>
-<br/>
-Также, кажется, не все сайты приходят в очередь на модерацию (даже те, у которых есть посещения)
-  </td>
-                                            <td class="customfield_10006">
-            Поддержка админки Топ100 2026
-    </td>
-                    </tr>
-
-
-                <tr id="issuerow5788241" rel="5788241" data-issuekey="ADSTOOLS-3811" class="issuerow">
-                                            <td class="issuetype">    История
-</td>
-                                            <td class="issuekey">
-
-    <a class="issue-link" data-issue-key="ADSTOOLS-3811" href="https://sberworks.ru/jira/browse/ADSTOOLS-3811">ADSTOOLS-3811</a>
-</td>
-                                            <td class="summary"><p>
-                Api-gateway нарушен порядок регистрации роутов из конфига
-    </p>
-</td>
-                                            <td class="description">      Нарушен порядок регистрации роутов из-за реализации мапы в го - стенд конфиг анмаршалится в мапу, что приводит к конфликту статических и динамических роутов
-  </td>
-                                            <td class="customfield_10006">
-            Поддержка api-gateway 2026
-    </td>
-                    </tr>
-
-
-                <tr id="issuerow5787727" rel="5787727" data-issuekey="ADSTOOLS-3806" class="issuerow">
-                                            <td class="issuetype">    История
-</td>
-                                            <td class="issuekey">
-
-    <a class="issue-link" data-issue-key="ADSTOOLS-3806" href="https://sberworks.ru/jira/browse/ADSTOOLS-3806">ADSTOOLS-3806</a>
-</td>
-                                            <td class="summary"><p>
-                Добавить описание хостов сервисов
-    </p>
-</td>
-                                            <td class="description">      * Добавить описание хостов сервисов, дока тут https://sberworks.ru/wiki/pages/viewpage.action?pageId=1046043178<br/>
-* Добавить имя сервиса<br/>
-* Перенести описание кафок и КХ<br/>
-* Валидаторы
-  </td>
-                                            <td class="customfield_10006">
-            Архитектура как код Q1 2026
-    </td>
-                    </tr>
-
-
-                <tr id="issuerow5783425" rel="5783425" data-issuekey="ADSTOOLS-3804" class="issuerow">
-                                            <td class="issuetype">    История
-</td>
-                                            <td class="issuekey">
-
-    <a class="issue-link" data-issue-key="ADSTOOLS-3804" href="https://sberworks.ru/jira/browse/ADSTOOLS-3804">ADSTOOLS-3804</a>
-</td>
-                                            <td class="summary"><p>
-                Добавить в ci master-front размер бандла
-    </p>
-</td>
-                                            <td class="description">      Добавить в ci master-front размер бандла в MR, рядом с test coverage<br/>
-Написать инструкцию по настройке для других фронтов
-  </td>
-                                            <td class="customfield_10006">
-            Развитие Frontend Platform Q1 2026
-    </td>
-                    </tr>
-
-
-                <tr id="issuerow5780439" rel="5780439" data-issuekey="ADSTOOLS-3768" class="issuerow">
-                                            <td class="issuetype">    История
-</td>
-                                            <td class="issuekey">
-
-    <a class="issue-link" data-issue-key="ADSTOOLS-3768" href="https://sberworks.ru/jira/browse/ADSTOOLS-3768">ADSTOOLS-3768</a>
-</td>
-                                            <td class="summary"><p>
-                Ограничить в ошибках метода get-token размер description до 255 символов
-    </p>
-</td>
-                                            <td class="description">      В ответе метода get-token ограничить размер description 255 символами, если превышает, то обрезать.<br/>
-<br/>
-Необходимо для поддержки интеграции с ШЭС (там есть проверки на не превышение размерности)
-  </td>
-                                            <td class="customfield_10006">
-            Поддержка api-gateway 2026
-    </td>
-                    </tr>
-
-
-                <tr id="issuerow5772931" rel="5772931" data-issuekey="ADSTOOLS-3752" class="issuerow">
-                                            <td class="issuetype">    История
-</td>
-                                            <td class="issuekey">
-
-    <a class="issue-link" data-issue-key="ADSTOOLS-3752" href="https://sberworks.ru/jira/browse/ADSTOOLS-3752">ADSTOOLS-3752</a>
-</td>
-                                            <td class="summary"><p>
-                Select исправление работы чекбоксов
-    </p>
-</td>
-                                            <td class="description">      Необходимо вернуть выбор опции селекта при клике на чекбокс. Сейчас опция выбирается только при клике на лейбл чекбокса, но не при клике на сам элемент. <br/>
-<br/>
-https://frontend.pages.sca.ad-tech.ru/adtech-modules/?path=/docs/%D0%BA%D0%BE%D0%BC%D0%BF%D0%BE%D0%BD%D0%B5%D0%BD%D1%82%D1%8B-select--docs<br/>
-<br/>
-[^Screen Recording 2026-01-15 at 13.21.40.mov]
-  </td>
-                                            <td class="customfield_10006">
-            UI Kit Q1 2026
-    </td>
-                    </tr>
-
-
-                <tr id="issuerow5767468" rel="5767468" data-issuekey="ADSTOOLS-3631" class="issuerow">
-                                            <td class="issuetype">    История
-</td>
-                                            <td class="issuekey">
-
-    <a class="issue-link" data-issue-key="ADSTOOLS-3631" href="https://sberworks.ru/jira/browse/ADSTOOLS-3631">ADSTOOLS-3631</a>
-</td>
-                                            <td class="summary"><p>
-                Заменить популярные материалы на главной на данные из апи
-    </p>
-</td>
-                                            <td class="description">      Номер счетчика: 7750449<br/>
-<br/>
-Для экспериментов, можно использовать 7715095, но он стоит на большем количестве страниц.<br/>
-<br/>
-В выдаче нужно 8 материалов (могу передать лимит)<br/>
-Нужен title и url.<br/>
-<br/>
-Предусмотреть проверку, что мы отдаем только ссылки на ads.sber.ru (чтобы нечаянно тестовые не вылезли)
-  </td>
-                                            <td class="customfield_10006">
-            Поддержка админки Новостей 2026
-    </td>
-                    </tr>
-                </tbody>
-    </table>
-    </issuetable-web-component>
-    <div class="end-of-stable-message"></div>
-            <table border="1" >
-<tr>
-    <td bgcolor="#f5f5f5" colspan="5"><font size="1">
-        Полученный Wed Feb 18 11:48:41 MSK 2026 Анастасия Зайцева используя Jira 8.20.11#820011-sha1:0629dd8d260e3954ece49053e565d01dabe11609.
-    </font></td>
-</tr>
-</table>
-
-
-<script id='boomr' type='text/javascript' src='../../../monitoring?resource=boomerang.min.js' async='true' data-beacon-url='../../../monitoring?part=rum' data-request-name="/sr/jira.issueviews:searchrequest-html-current-fields/temp/SearchRequest.html GET" data-server-time='137'></script>
-</body>
-</html>
