@@ -1,11 +1,11 @@
 import sys
-import subprocess
 import json
 from src.get_jira_data import get_jira_data
 from src.gigachat_client import analyze_sprint_data_giga
 from src.lmstudio_client import analyze_sprint_data_lmstudio
 from src.ollama_client import analyze_sprint_data_ollama
 from src.create_pptx import create_presentation
+from src.read_pdf import extract_data_from_pdf
 
 def get_sprint_data(sprint_number):
     data_file = f"data/data_raw_{sprint_number}.py"
@@ -37,7 +37,7 @@ def main():
     if data_source == 'jira':
         analyzed_data = get_jira_data(sprint_number)
     elif data_source == 'pdf':
-        subprocess.run([sys.executable, "src/read_pdf.py", sprint_number], check=True)
+        analyzed_data = extract_data_from_pdf(f"pdf/sprint_{sprint_number}.pdf")
     elif data_source == 'json':
         analyzed_data = get_analyzed_data(sprint_number)
     else:
