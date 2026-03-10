@@ -31,6 +31,7 @@ uv run main.py <sprint_number> <data_source> <ai_processing>
   - `giga` - анализ через GigaChat (требует API ключа)
   - `lmstudio` - анализ через локальную модель LMStudio
   - `ollama` - анализ через локальную модель Ollama (deepseek-r1:8b)
+  - `open` - анализ через провайдера OpenRouter (qwen3-vl-235b-a22b-thinking)
 
 ### Примеры использования
 
@@ -46,6 +47,9 @@ uv run main.py 24 pdf giga
 
 # Получить данные из PDF и обработать через LMStudio
 uv run main.py 24 pjiraf lmstudio
+
+# Получить данные из PDF и обработать через OpenRoute
+uv run main.py 24 pjiraf open
 ```
 
 Результат сохраняется в папку `result/` как `sprint_<sprint_number>.pptx`.

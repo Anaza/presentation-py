@@ -85,7 +85,7 @@ def analyze_sprint_data_ollama(sprint_number):
     user_content = f"Данные спринта: {data}"
 
     response = client.chat.completions.create(
-        model="deepseek-r1:8b",
+        model=os.getenv('OLLAMA_MODEL', 'deepseek-r1:8b'),
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_content}

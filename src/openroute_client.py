@@ -65,7 +65,7 @@ def analyze_sprint_data_open(sprint_number):
     message = f"{system_prompt}\n\n{user_content}"
 
     response = client.chat.completions.create(
-        model="lmstudio-community/DeepSeek-R1-0528-Qwen3-8B-GGUF",
+        model=os.getenv('OPENROUTER_MODEL', 'lmstudio-community/DeepSeek-R1-0528-Qwen3-8B-GGUF'),
         messages=[
             {"role": "user", "content": message}
         ],
