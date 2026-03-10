@@ -6,8 +6,8 @@ from promt.promt import prompt
 def get_ollama_client():
     # Ollama работает на localhost:11434 с OpenAI-compatible API
     client = OpenAI(
-        base_url="http://localhost:11434/v1",
-        api_key="not-needed"  # Ollama не требует API key
+        base_url=os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434/v1'),
+        api_key=os.getenv('OLLAMA_API_KEY', 'not-needed')  # Ollama не требует API key
     )
     return client
 

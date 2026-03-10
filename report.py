@@ -162,7 +162,8 @@ def generate_weekly_report(tasks, start_date, end_date):
         return report
     except Exception as e:
         print(f"Ошибка при генерации отчета: {e}")
-        return ""
+        # Если GigaChat не отвечает, записать сырые данные от Jira
+        return json.dumps(tasks, ensure_ascii=False, indent=2)
 
 def save_report(report, start_date):
     """Сохраняет отчет в папку report"""
@@ -184,6 +185,12 @@ def main():
 
         print(f"Период: {start_date.strftime('%d.%m.%Y')} - {end_date.strftime('%d.%m.%Y')}")
 
+        # Проверить, существует ли отчет
+        filename = f"report/weekly_report_{start_date.strftime('%Y-%m-%d')}.md"
+        if os.path.exists(filename):
+            print("Отчет уже существует")
+            return
+
         # Получить задачи
         tasks = get_jira_issues(start_date, end_date)
 
@@ -193,10 +200,6 @@ def main():
 
         # Сгенерировать отчет
         report = generate_weekly_report(tasks, start_date, end_date)
-
-        if not report:
-            print("Отчет не сгенерирован")
-            return
 
         # Сохранить отчет
         save_report(report, start_date)

@@ -4,6 +4,7 @@ from src.get_jira_data import get_jira_data
 from src.gigachat_client import analyze_sprint_data_giga
 from src.lmstudio_client import analyze_sprint_data_lmstudio
 from src.ollama_client import analyze_sprint_data_ollama
+from src.openroute_client import analyze_sprint_data_open
 from src.create_pptx import create_presentation
 from src.read_pdf import extract_data_from_pdf
 
@@ -27,7 +28,7 @@ def main():
     if len(sys.argv) < 4:
         print("Usage: python main.py <sprint_number> <data_source> <ai_processing>")
         print("data_source: jira, pdf, json")
-        print("ai_processing: none, giga, lmstudio, ollama")
+        print("ai_processing: none, giga, lmstudio, ollama, open")
         sys.exit(1)
 
     sprint_number = sys.argv[1]
@@ -51,8 +52,10 @@ def main():
             analyzed_data = analyze_sprint_data_lmstudio(sprint_number)
         elif ai_processing == 'ollama':
             analyzed_data = analyze_sprint_data_ollama(sprint_number)
+        elif ai_processing == 'open':
+            analyzed_data = analyze_sprint_data_open(sprint_number)
         else:
-            print("Invalid ai_processing. Use 'none', 'giga', 'lmstudio', or 'ollama'")
+            print("Invalid ai_processing. Use 'none', 'giga', 'lmstudio', 'ollama', or 'open'")
             sys.exit(1)
     else:
         if data_source == 'json':

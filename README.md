@@ -58,6 +58,11 @@ uv run main.py 24 pjiraf lmstudio
 - `result/` - папка для готовых презентаций
 - `images/logo.png` - логотип (опционально)
 
+## Получение отчета за неделю
+```bash
+uv run report.py 02.03
+```
+
 ## Зависимости
 
 - Python >= 3.12

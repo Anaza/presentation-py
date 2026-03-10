@@ -4,11 +4,10 @@ import re
 from openai import OpenAI
 from promt.promt import prompt
 
-def get_lmstudio_client():
-    # LMStudio обычно работает на localhost:1234 без дополнительных credentials
+def get_openroute_client():
     client = OpenAI(
-        base_url=os.getenv('LMSTUDIO_BASE_URL', 'http://localhost:1234/v1'),
-        api_key=os.getenv('LMSTUDIO_API_KEY', 'not-needed')  # LMStudio не требует API key
+        base_url=os.getenv('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1'),
+        api_key=os.getenv('OPENROUTER_API_KEY', 'api_key')  # OpenRouter API key
     )
     return client
 
@@ -28,8 +27,8 @@ def get_analyzed_data(sprint_number):
     except Exception as e:
         raise FileNotFoundError(f"Analyzed data file not found: {data_file}. Run with use_ai='lmstudio' or 'giga' first or ensure the file exists.")
 
-def clean_lmstudio_response(response):
-    # print("LM Studio response:", response)
+def clean_openroute_response(response):
+    # print("OpenRouter response:", response)
     # Аналогичная очистка как в gigachat_client
     response = response.strip()
     # Убрать секцию <think>...</think>
@@ -52,8 +51,8 @@ def clean_lmstudio_response(response):
     response = response.strip()
     return response
 
-def analyze_sprint_data_lmstudio(sprint_number):
-    client = get_lmstudio_client()
+def analyze_sprint_data_open(sprint_number):
+    client = get_openroute_client()
 
     # Получить данные
     data = get_sprint_data(sprint_number)
@@ -73,11 +72,11 @@ def analyze_sprint_data_lmstudio(sprint_number):
         temperature=0.7
     )
 
-    lmstudio_response = clean_lmstudio_response(response.choices[0].message.content)
+    openroute_response = clean_openroute_response(response.choices[0].message.content)
 
     # Предполагаем, что ответ в JSON формате
     try:
-        result = json.loads(lmstudio_response)
+        result = json.loads(openroute_response)
         # Сохранить чистый JSON в data файл
         data_file = f"data/data_{sprint_number}.py"
         with open(data_file, "w", encoding="utf-8") as f:
