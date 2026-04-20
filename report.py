@@ -152,9 +152,13 @@ def generate_weekly_report(tasks, start_date, end_date):
     try:
         client = get_gigachat_client()
 
-        user_content = f"Задачи: {json.dumps(tasks, ensure_ascii=False)}"
+        start_str = start_date.strftime('%d.%m.%Y')
+        end_str = end_date.strftime('%d.%m.%Y')
 
-        message = f"{weekly_report_prompt}\n\n{user_content}"
+        prompt_filled = weekly_report_prompt.format(start_date=start_str, end_date=end_str)
+        user_content = f"Период: {start_str} - {end_str}\nЗадачи: {json.dumps(tasks, ensure_ascii=False)}"
+
+        message = f"{prompt_filled}\n\n{user_content}"
 
         response = client.chat(message)
 
